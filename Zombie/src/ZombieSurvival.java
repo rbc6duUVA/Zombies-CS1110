@@ -82,6 +82,7 @@ public class ZombieSurvival {
 		// TODO: Change this method to help the player move!
 		if (button == -1) {
 			output.println("Mouse: " + x + "," + y);
+			
 		}
 
 		if (button == 1) {
