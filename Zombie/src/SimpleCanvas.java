@@ -234,7 +234,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 
 		// TODO: Change this! Right now this draws a human at 300,300
 		
-		g.drawImage(humanSprites[0][0], 300, 300, null);
+		g.drawImage(humanSprites[0][0], (int) h.getX(), (int) h.getY(), null);
 
 	}
 
@@ -295,6 +295,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * Whenever the mouse enters the ZombieSurvival, this method gets called.
 	 */
 	public void mouseEntered(MouseEvent e) {
+		
 	}
 
 	/**
