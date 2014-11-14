@@ -1,3 +1,5 @@
+// Ben Canty (rbc6du) and Hunter Burrell (hxb5te)
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
