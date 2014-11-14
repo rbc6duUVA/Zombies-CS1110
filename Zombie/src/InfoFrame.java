@@ -62,4 +62,4 @@ public class InfoFrame {
 		textArea.append(str);
 	}
 
-}
+} 
