@@ -29,17 +29,15 @@ public class ZombieSurvival {
 	private final int BOARDHEIGHT = 700;
 	private final int BOARDWIDTH = 700;
 	
-	// --------------------------------------------------------
-	// Fields
-	// You should setup fields to keep up with:
-	// - a whole bunch of Zombies
-	// - a single Human
-	// - a whole bunch of obstacles, represented as Rectangles
-	// - some way to know if the game is over
-	// - a way to keep track of the score
-	// - how many zombies you should start with
-	// --------------------------------------------------------
-
+	//General Fields
+	private Human player;
+	private ArrayList<Rectangle> obstacles;
+	private ArrayList<Zombie> zombies;
+	private int score;
+	private int ticks;
+	boolean gameover;
+	
+	
 	// -----------------------------------------
 	// Methods
 
@@ -55,11 +53,14 @@ public class ZombieSurvival {
 		// Initialize your output frame
 		output = new InfoFrame(this);
 
-		// TODO: Here is where you should create your initial zombies and your Human
-		// 20 is a good speed for the human - 10 for the zombie, but experiment!
-		// You should also load your course file here to get the obstacles
-		// on screen.
-
+		player = new Human();
+		zombies = new ArrayList<Zombie>();
+		obstacles = new ArrayList<Rectangle>();
+		score = 0;
+		ticks = 0;
+		gameover = false;
+		
+		loadObstacles("course.csv");
 	}
 	
 	/**
@@ -69,8 +70,12 @@ public class ZombieSurvival {
 	 * @throws Exception
 	 */
 	public void loadObstacles(String filename) throws Exception {
-		// TODO: fill in this method to read the csv file and 
-		// populate a list of obstacle Rectangles
+		Scanner s = new Scanner(new File(filename));
+		while(s.hasNextLine()) {
+			String[] temp = s.nextLine().split(",");
+			obstacles.add(new Rectangle( Integer.parseInt(temp[0]) , Integer.parseInt(temp[1]) , Integer.parseInt(temp[2]) , Integer.parseInt(temp[3]) ));
+		}
+		s.close();
 	}
 
 	/**
@@ -81,12 +86,12 @@ public class ZombieSurvival {
 	public void mouseAction(float x, float y, int button) {
 		// TODO: Change this method to help the player move!
 		if (button == -1) {
-			output.println("Mouse: " + x + "," + y);
-			
+			player.setTry(x, y);
 		}
 
 		if (button == 1) {
-			output.println("You clicked the left mouse button!");
+			output.println("BOMB!");
+			player.addNumOfBombs(-1);
 		}
 
 		if (button == 3) {
@@ -120,20 +125,30 @@ public class ZombieSurvival {
 	 * 
 	 */
 	public void draw(Graphics2D g, float elapsedTime) {
-		// TODO: Nearly ALL your game logic will go here!  This is called on 
-		// every refresh of the screen and is the "main game loop".
+		ticks++;
 		
-		// This is how you draw the Human, replacing the null with the human
-		// object
-		canvas.drawHuman(g, null);
+		//updates all the obstacles and checks for collisions
+		for(int i=0; i<obstacles.size(); i++) {
+			canvas.drawObstacle(g, obstacles.get(i));
+			player.getCollision(obstacles.get(i));
+			//for(int j=0;j<zombies.size(); j++) { zombies.get(j).getCollision(obstacles.get(i); }
+		}
+		
+		player.move(elapsedTime);
+		canvas.drawHuman(g, player);
 
-		// This is how you draw the Zombies, replacing the null with a zombie
-		// object
-		canvas.drawZombie(g, null);
+		if(ticks%100 == 0) { score++; }
+		if(ticks%50000 == 0) { player.addNumOfBombs(1); }
+		
+		//Every 5000 calls of draw, a zombie is made
+		if(ticks%5000 == 0) { zombies.add(new Zombie()); }		//needs a way to ensure that the new zombie wont spawn inside an obstacle
+		for(int i=0; i<zombies.size(); i++) {
+			canvas.drawZombie(g, zombies.get(i));
+		}
 		
 		// This is how your draw an obstacle, replacing the new Rectangle with
 		// one from your list of obstacles
-		canvas.drawObstacle(g, new Rectangle(400,100,20,300));
+
 
 	}
 
