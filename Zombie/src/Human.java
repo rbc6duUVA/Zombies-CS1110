@@ -1,5 +1,6 @@
+// Ben Canty (rbc6du) and Hunter Burrell (hxb5te)
+
 import java.awt.Rectangle;
-import java.util.Vector;
 
 /**
  * Human.java
