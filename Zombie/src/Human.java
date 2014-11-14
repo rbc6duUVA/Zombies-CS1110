@@ -29,7 +29,6 @@ public class Human {
 	private int width;
 	private int height;
 	private int[][] spriteImage;
-	
 	Rectangle killUP, killDOWN, killLEFT, killRIGHT;
 	
 	public double getX() {
@@ -37,12 +36,6 @@ public class Human {
 	}
 	public double getY() {
 		return y;
-	}
-	public double getDX() {
-		return dx;
-	}
-	public double getDY() {
-		return dy;
 	}
 	public void setTry(double tX, double tY) {
 		tryX = tX;
@@ -69,25 +62,18 @@ public class Human {
 		numOfBombs = 3;
 		width = 37;
 		height = 73;
-		hitbox = new Rectangle( (int) x , (int) y , width , height );
-		
-		killUP = 	new Rectangle( (int) x 				, (int) y-1 				, width , 1);
-		killDOWN = 	new Rectangle( (int) x 				, (int) (y + height + 1)	, width , 1);
-		killLEFT = 	new Rectangle( (int) (x-1) 			, (int) y 					, 1 	, height);
-		killRIGHT = new Rectangle( (int) (x + width + 1), (int) y 					, 1 	, height);
-		
+		hitbox = 	new Rectangle( (int) x 			, (int) y 			, width 	, height 	);
+		killUP = 	new Rectangle( (int) x 			, (int) y-1			, width 	, 1			);
+		killDOWN = 	new Rectangle( (int) x 			, (int) (y+height+1), width 	, 1			);
+		killLEFT = 	new Rectangle( (int) x-1 		, (int) y 			, 1 		, height	);
+		killRIGHT = new Rectangle( (int) (x+width+1), (int) y 			, 1 		, height	);
 	}
 
-	/**
-	 * MUST RUN BEFORE HUMAN.MOVE(time)!!!
-	 * @param target
-	 * @return
-	 */
 	public boolean getCollision(Rectangle target) {
 		if( (target.intersects(killUP)) && (dy < 0) ) {dy = 0;}
 		if( (target.intersects(killDOWN)) && (dy > 0) ) {dy = 0;}
 		if( (target.intersects(killLEFT)) && (dx < 0) ) {dx = 0;}
-		if( (target.intersects(killRIGHT)) && (dy < 0) ) {dx = 0;}
+		if( (target.intersects(killRIGHT)) && (dx > 0) ) {dx = 0;}
 		return target.intersects(this.hitbox);
 	}
 	public void homeMouse(){
@@ -98,19 +84,20 @@ public class Human {
 		double yWard = deltaY / Math.sqrt((deltaX*deltaX) + (deltaY*deltaY));
 		
 		//Scale unit vector to speed of Human
-		dx = speed*xWard;
-		dy = speed*yWard;
+		dx = (int) (speed*xWard);
+		dy = (int) (speed*yWard);
+		
+		if( Math.abs(deltaX) < Math.abs(xWard) ) {dx=0;}
+		if( Math.abs(deltaY) < Math.abs(yWard) ) {dy=0;}
 	}
 	public void move(double ellapsedTime) {
-		x += dx*ellapsedTime;
-		y += dy*ellapsedTime;
-		hitbox.translate((int) (dx*ellapsedTime), (int) (dy*ellapsedTime));
-		killUP.translate((int) (dx*ellapsedTime), (int) (dy*ellapsedTime));
-		killDOWN.translate((int) (dx*ellapsedTime), (int) (dy*ellapsedTime));
-		killRIGHT.translate((int) (dx*ellapsedTime), (int) (dy*ellapsedTime));
-		killLEFT.translate((int) (dx*ellapsedTime), (int) (dy*ellapsedTime));
+		x += (int) dx*ellapsedTime;
+		y += (int) dy*ellapsedTime;
+		hitbox.setLocation( 	(int) x 			, (int) y				);
+		killUP.setLocation( 	(int) x 			, (int) y-1				);
+		killDOWN.setLocation( 	(int) x 			, (int) (y+height+1)	);
+		killLEFT.setLocation( 	(int) x-1			, (int) y 				);
+		killRIGHT.setLocation( 	(int) (x+width+1)	, (int) y 				);
 		homeMouse();
 	}
-
-		
 }
