@@ -1,3 +1,5 @@
+// Ben Canty (rbc6du) and Hunter Burrell (hxb5te)
+
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -62,4 +64,4 @@ public class InfoFrame {
 		textArea.append(str);
 	}
 
-} 
+}
