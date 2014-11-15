@@ -72,7 +72,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		}
 
 	}
-
+	
 	/**
 	 * Loads the images needed to draw the human character. Add code here to do
 	 * animation or to use different sprites.
@@ -83,7 +83,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 */
 	public BufferedImage[][] loadHumanSprites(String filename) {
 
-		BufferedImage[][] spriteArray = new BufferedImage[4][8];
+		BufferedImage[][] spriteArray = new BufferedImage[5][8];
 		BufferedImage spriteSheet = null;
 
 		try {
@@ -92,17 +92,55 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 			System.err.println("Cannot load images!");
 		}
 
-		// load right facing
-		spriteArray[0][0] = spriteSheet.getSubimage(100, 80, 50, 80);
-
-		// load left facing
-		spriteArray[1][0] = getFlippedImage(spriteSheet.getSubimage(100, 80, 50, 80));
-
-		// load up facing
-		spriteArray[2][0] = spriteSheet.getSubimage(100, 230, 50, 80);
-
-		// load down facing
-		spriteArray[3][0] = spriteSheet.getSubimage(100, 160, 50, 80);
+		// load right facing // updated
+		spriteArray[0][0] = spriteSheet.getSubimage(5, 80, 38, 74);
+		spriteArray[0][1] = spriteSheet.getSubimage(53, 80, 92-53, 74);
+		spriteArray[0][2] = spriteSheet.getSubimage(103, 80, 142-103, 74);
+		spriteArray[0][3] = spriteSheet.getSubimage(152, 77, 190-152, 74);
+		spriteArray[0][4] = spriteSheet.getSubimage(195, 77, 234-195, 74);
+		spriteArray[0][5] = spriteSheet.getSubimage(247, 80, 286-247, 74);
+		spriteArray[0][6] = spriteSheet.getSubimage(293, 80, 332-293, 74);
+		spriteArray[0][7] = spriteSheet.getSubimage(341, 80, 380-341, 74);
+		
+		// load left facing // updated
+		spriteArray[1][0] = getFlippedImage(spriteSheet.getSubimage(5, 79, 38, 74));
+		spriteArray[1][1] = getFlippedImage(spriteSheet.getSubimage(53, 79, 92-53, 74));
+		spriteArray[1][2] = getFlippedImage(spriteSheet.getSubimage(103, 79, 142-103, 74));
+		spriteArray[1][3] = getFlippedImage(spriteSheet.getSubimage(151, 77, 190-152, 74));
+		spriteArray[1][4] = getFlippedImage(spriteSheet.getSubimage(195, 77, 234-195, 74));
+		spriteArray[1][5] = getFlippedImage(spriteSheet.getSubimage(247, 79, 286-247, 74));
+		spriteArray[1][6] = getFlippedImage(spriteSheet.getSubimage(293, 79, 332-293, 74));
+		spriteArray[1][7] = getFlippedImage(spriteSheet.getSubimage(341, 79, 380-341, 74));
+		
+		// load up facing // updated
+		spriteArray[2][0] = spriteSheet.getSubimage(7, 237, 39, 75);
+		spriteArray[2][1] = spriteSheet.getSubimage(55, 237, 39, 75);
+		spriteArray[2][2] = spriteSheet.getSubimage(101, 237, 39, 75);
+		spriteArray[2][3] = spriteSheet.getSubimage(151, 237, 39, 75);
+		spriteArray[2][4] = spriteSheet.getSubimage(197, 237, 39, 75);
+		spriteArray[2][5] = spriteSheet.getSubimage(245, 237, 39, 75);
+		spriteArray[2][6] = spriteSheet.getSubimage(291, 237, 39, 75);
+		spriteArray[2][7] = spriteSheet.getSubimage(341, 237, 39, 75);
+		
+		// load down facing // updated
+		spriteArray[3][0] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[3][1] = spriteSheet.getSubimage(55, 159, 39, 75);
+		spriteArray[3][2] = spriteSheet.getSubimage(101, 159, 39, 75);
+		spriteArray[3][3] = spriteSheet.getSubimage(151, 161, 39, 75);
+		spriteArray[3][4] = spriteSheet.getSubimage(197, 159, 39, 75);
+		spriteArray[3][5] = spriteSheet.getSubimage(245, 159, 39, 75);
+		spriteArray[3][6] = spriteSheet.getSubimage(291, 159, 39, 75);
+		spriteArray[3][7] = spriteSheet.getSubimage(341, 161, 39, 75);
+		
+		//Stationary
+		spriteArray[4][0] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][1] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][2] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][3] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][4] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][5] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][6] = spriteSheet.getSubimage(7, 159, 39, 75);
+		spriteArray[4][7] = spriteSheet.getSubimage(7, 159, 39, 75);
 
 		return spriteArray;
 	}
@@ -117,7 +155,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 */
 	public BufferedImage[][] loadZombieSprites(String filename) {
 
-		BufferedImage[][] spriteArray = new BufferedImage[4][8];
+		BufferedImage[][] spriteArray = new BufferedImage[4][3];
 		BufferedImage spriteSheet = null;
 
 		try {
@@ -126,18 +164,26 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 			System.err.println("Cannot load images!");
 		}
 
-		// load right facing
-		spriteArray[0][0] = spriteSheet.getSubimage(3, 100, 75, 100);
+		// load right facing // updated
+		spriteArray[0][0] = spriteSheet.getSubimage(18, 111, 61-18, 192-111);
+		spriteArray[0][1] = spriteSheet.getSubimage(98, 108, 133-98, 189-108);
+		spriteArray[0][2] = spriteSheet.getSubimage(165, 111, 208-165, 192-111);
 
-		// load left facing
-		spriteArray[1][0] = spriteSheet.getSubimage(3, 300, 75, 100);
+		// load left facing // u-p-d-a-t-e-d
+		spriteArray[1][0] = getFlippedImage(spriteSheet.getSubimage(18, 111, 61-18, 192-111));
+		spriteArray[1][1] = getFlippedImage(spriteSheet.getSubimage(98, 108, 133-98, 189-108));
+		spriteArray[1][2] = getFlippedImage(spriteSheet.getSubimage(165, 111, 208-165, 192-111));
+		
+		// load up facing // updated
+		spriteArray[2][0] = spriteSheet.getSubimage(16, 16, 59-16, 94-16);
+		spriteArray[2][1] = spriteSheet.getSubimage(89, 13, 133-89, 91-13);
+		spriteArray[2][2] = spriteSheet.getSubimage(163, 16, 207-163, 94-16);
 
-		// load up facing
-		spriteArray[2][0] = spriteSheet.getSubimage(3, 3, 75, 100);
-
-		// load down facing
-		spriteArray[3][0] = spriteSheet.getSubimage(3, 200, 75, 100);
-
+		// load down facing // 
+		spriteArray[3][0] = spriteSheet.getSubimage(16, 212, 59-16, 290-212);
+		spriteArray[3][1] = spriteSheet.getSubimage(89, 209, 133-89, 287-209);
+		spriteArray[3][2] = spriteSheet.getSubimage(163, 212, 207-163, 290-212);
+		
 		return spriteArray;
 	}
 
@@ -167,8 +213,12 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.white);
-		simulator.draw((Graphics2D) g, (first ? 0.0f : (float) elapsedTime / 1e9f));
-		repaint();
+		if(simulator.draw((Graphics2D) g, (first ? 0.0f : (float) elapsedTime / 1e9f))) {
+			repaint();
+		} else {
+			return;
+		}
+		
 	}
 
 	/**
@@ -214,11 +264,8 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * @param z
 	 *            Zombie to draw
 	 */
-	public void drawZombie(Graphics2D g, Zombie z) {
-
-		// TODO: Change this! Right now this draws a zombie at 100,100
-		g.drawImage(zombieSprites[0][0], 100, 100, null);
-
+	public void drawZombie(Graphics2D g, Zombie z, int direction, int phase) {
+		g.drawImage(zombieSprites[direction][phase], (int) z.getX(), (int) z.getY(), null);
 	}
 
 	/**
@@ -232,12 +279,8 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * @param h
 	 *            Human to draw
 	 */
-	public void drawHuman(Graphics2D g, Human h) {
-
-		// TODO: Change this! Right now this draws a human at 300,300
-		
-		g.drawImage(humanSprites[0][0], (int) h.getX(), (int) h.getY(), null);
-
+	public void drawHuman(Graphics2D g, Human h, int direction, int phase) {
+		g.drawImage(humanSprites[direction][phase], (int) h.getX(), (int) h.getY(), null);
 	}
 
 	/**
@@ -252,8 +295,8 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * @param y
 	 *            y coordinate to draw
 	 */
-	public void drawBoom(Graphics2D g, int x, int y) {
-		// TODO: Fill in this method!
+	public void drawBoom(Graphics2D g, Human h) {
+		g.drawImage(boomSprite, (int) (h.getX() - 50), (int) (h.getY() - 50), null);
 	}
 
 	/**
