@@ -29,7 +29,6 @@ public class Human {
 	Rectangle hitbox;
 	private int width;
 	private int height;
-	private int[][] spriteImage;
 	Rectangle killUP, killDOWN, killLEFT, killRIGHT;
 	
 	public double getX() {
@@ -59,7 +58,7 @@ public class Human {
 		tryY=0;
 		dx=1;
 		dy=1;
-		speed=40;
+		speed=50;
 		numOfBombs = 3;
 		width = 37;
 		height = 73;
@@ -100,5 +99,25 @@ public class Human {
 		killLEFT.setLocation( 	(int) x-1			, (int) y 				);
 		killRIGHT.setLocation( 	(int) (x+width+1)	, (int) y 				);
 		homeMouse();
+	}
+	public int getDirection() {
+		// 0 - right
+		// 1 - left
+		// 2 - up
+		// 3 - down
+		// 4 - stationary **REQUIRES MODIFICATION TO "SimpleCanvas"
+		if( (dx == 0) && (dy == 0) ) {
+			return 4;
+		}
+		if(Math.abs(dx) > Math.abs(dy)) {
+			if(dx >= 0) return 0;
+			if(dx < 0) return 1;
+		}
+		if(Math.abs(dx) <= Math.abs(dy)) {
+			if(dy >= 0) return 3;
+			if(dy < 0) return 2;
+		}
+		//Should never be called
+		return 4;	//Change to a stationary is possible
 	}
 }
