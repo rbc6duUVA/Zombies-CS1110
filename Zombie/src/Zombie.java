@@ -41,9 +41,9 @@ public class Zombie {
 		height = 44;
 		hitbox = 	new Rectangle( (int) x 					, (int) y 				, width 			, height 			);
 		killUP = 	new Rectangle( (int) x 					, (int) y-1				, (int) 1.7*width 	, 1					);
-		killDOWN = 	new Rectangle( (int) x 					, (int) (y+1.7*height+1), (int) 1.7*width 	, 1					);
-		killLEFT = 	new Rectangle( (int) x-1 				, (int) y 				, 1 				, (int) 1.7*height	);
-		killRIGHT = new Rectangle( (int) (x+1.7*width+1)	, (int) y 				, 1 				, (int) 1.7*height	);
+		killDOWN = 	new Rectangle( (int) x 					, (int) (y+2*height+1)	, (int) 1.7*width 	, 1					);
+		killLEFT = 	new Rectangle( (int) x-1 				, (int) y 				, 1 				, (int) 2*height	);
+		killRIGHT = new Rectangle( (int) (x+1.7*width+1)	, (int) y 				, 1 				, (int) 2*height	);
 	}
 
 	public boolean getObstacleCollision(Rectangle target) {
@@ -75,7 +75,7 @@ public class Zombie {
 		y += (int) dy*ellapsedTime;
 		hitbox.setLocation( 	(int) x 				, (int) y					);
 		killUP.setLocation( 	(int) x 				, (int) y-1					);
-		killDOWN.setLocation( 	(int) x 				, (int) (y+1.7*height+1)	);
+		killDOWN.setLocation( 	(int) x 				, (int) (y+2*height+1)		);
 		killLEFT.setLocation( 	(int) x-1				, (int) y 					);
 		killRIGHT.setLocation( 	(int) (x+1.7*width+1)	, (int) y 					);
 		homePlayer();
