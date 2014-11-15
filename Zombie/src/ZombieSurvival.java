@@ -32,11 +32,16 @@ public class ZombieSurvival {
 	private ArrayList<Zombie> zombies;
 	private int score;
 	private int ticks;
+	private int PowerUpTick;
 	private int boomTick;
 	private int phaseH;
 	private int phaseZ;
+	private int phasePUB;
 	boolean gameover;
-	boolean bombExploded;
+	
+	private boolean bombExploded;
+	private boolean powerUpBombActive;
+	private boolean wasActivated;
 	
 
 	public ZombieSurvival() throws Exception {
@@ -46,12 +51,22 @@ public class ZombieSurvival {
 		zombies = new ArrayList<Zombie>();
 		obstacles = new ArrayList<Rectangle>();
 		score = 0;
+		
 		ticks = 0;
+		
 		boomTick = 0;
+		PowerUpTick = 0;
+		
 		phaseH = 0;
 		phaseZ = 0;
+		phasePUB = 0;
+		
 		gameover = false;
+		
 		bombExploded = false;
+		powerUpBombActive = false;
+		wasActivated = false;
+		
 		loadObstacles("course.csv");
 	}
 	
@@ -85,7 +100,7 @@ public class ZombieSurvival {
 
 	public void detonateBomb() {
 		int numZombKilled=0;
-		Rectangle bomb = new Rectangle((int) (player.getX()-50) , (int) (player.getY()-50) , 150 , 150 );
+		Rectangle bomb = new Rectangle((int) (player.getX()-50) , (int) (player.getY()-50) , 200 , 200 );
 		for(int i=0; i<zombies.size(); i++) {
 			if(bomb.intersects(zombies.get(i).getHitbox())) {
 				zombies.remove(i);
@@ -96,6 +111,7 @@ public class ZombieSurvival {
 	}
 
 	public boolean draw(Graphics2D g, float elapsedTime) {
+
 		//Keep track of the number of draw cycles
 		ticks++;
 
@@ -110,11 +126,15 @@ public class ZombieSurvival {
 		player.move(elapsedTime);	//Must occur after "getCollision()" is called -- how the Human class works.
 		canvas.drawHuman(g, player, player.getDirection(), phaseH);
 
+		////////////////////////////////////////////////////////////////////
 		//Time sensitive events
 		if(ticks%100 == 0) { 
 			score++; 
 			phaseH++;
 			if(phaseH==8) { phaseH=0; }
+			phasePUB++;
+			if(phasePUB==4) { phasePUB=0; }
+			
 		}
 		if(ticks%200 == 0) {
 			phaseZ++;
@@ -125,31 +145,41 @@ public class ZombieSurvival {
 			int zy = (int) (Math.random()*(BOARDHEIGHT-81));
 			boolean conflict = false;
 			
-			Confliction:
+			Confliction1:
 			for(int i=0; i<obstacles.size(); i++) {
 				if(new Rectangle(zx,zy,50,90).intersects(obstacles.get(i))) {
 					conflict = true;
-					break Confliction;
+					break Confliction1;
 				}
 			}
 			
 			if(new Rectangle(zx,zy,90,130).intersects(player.getHitbox())) { conflict = true; }
-
+			
 			if(!conflict) { zombies.add(new Zombie(zx,zy)); }
 		}		
 		if(ticks%50000 == 0) {
 			player.addNumOfBombs(1);
 			output.println("New Bomb Acquired!");
 		}
-		if(ticks == 50001) 		{ ticks = 1; }
+		if(ticks%100 == 0) {
+			powerUpBombActive = true;
+			wasActivated = true;
+		}
+		if(ticks == 100001) 		{ ticks = 1; }
+		////////////////////////////////////////////////////////////////////
+		
 		
 		//Zombie actions go here
 		for(int i=0; i<zombies.size(); i++) {
 			canvas.drawZombie(g, zombies.get(i), zombies.get(i).getDirection(), phaseZ);
 			zombies.get(i).setTry(player.getX(),player.getY());
 			if(zombies.get(i).playerCollision(player.getHitbox())) { gameover = true; }
+			for(int j=i+1; j<zombies.size(); j++) { zombies.get(i).getObstacleCollision(zombies.get(j).getHitbox()); }
 			zombies.get(i).move(elapsedTime);
 		}
+		
+		////////////////////////////////////////////////////////////////////
+		// Boolean sprite animations (explosions and powerups)
 		if(bombExploded) {
 			boomTick++;
 			canvas.drawBoom(g,player);
@@ -158,15 +188,37 @@ public class ZombieSurvival {
 				bombExploded=false;
 			}
 		}
-		//Using return (in void) to terminate the game is gameover occurs
+		
+		////////////////////////////////////////////////////////////////////
+		int puX = (int) (Math.random()*BOARDWIDTH);
+		int puY = (int) (Math.random()*BOARDHEIGHT);
+		int powerUpChooser = (int) Math.random()*1;
+		//
+		if(powerUpBombActive) {
+			PowerUp extraBomb = new PowerUp(-50,-50,0);
+			if(wasActivated == true) {	
+				extraBomb = new PowerUp(puX,puY,powerUpChooser);
+				wasActivated = false;
+			}
+			extraBomb.drawPowerUp(canvas, g);
+			if(player.getHitbox().intersects(extraBomb.getHitbox())) {
+				player.addNumOfBombs(1);
+				output.println("Power UP!  Extra Bomb! ("+ player.getNumOfBombs() +")");
+			}
+			powerUpBombActive = extraBomb.isAlive();
+		}
+
+		////////////////////////////////////////////////////////////////////
+		
+		
+		
+		////////////////////////////////////////////////////////////////////
 		if(gameover) {
 			output.println("GAME OVER");
 			output.println("Your Score: "+score);
 			return false;
-		} else {
-			return true;
 		}
-
+		return true;
 	}
 
 	public static void main(String[] args) throws Exception {
