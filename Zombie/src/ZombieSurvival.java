@@ -133,6 +133,8 @@ public class ZombieSurvival {
 				}
 			}
 			
+			if(new Rectangle(zx,zy,90,130).intersects(player.getHitbox())) { conflict = true; }
+
 			if(!conflict) { zombies.add(new Zombie(zx,zy)); }
 		}		
 		if(ticks%50000 == 0) {
