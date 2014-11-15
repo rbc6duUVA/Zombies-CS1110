@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -33,7 +32,11 @@ public class ZombieSurvival {
 	private ArrayList<Zombie> zombies;
 	private int score;
 	private int ticks;
+	private int boomTick;
+	private int phaseH;
+	private int phaseZ;
 	boolean gameover;
+	boolean bombExploded;
 	
 
 	public ZombieSurvival() throws Exception {
@@ -44,7 +47,11 @@ public class ZombieSurvival {
 		obstacles = new ArrayList<Rectangle>();
 		score = 0;
 		ticks = 0;
+		boomTick = 0;
+		phaseH = 0;
+		phaseZ = 0;
 		gameover = false;
+		bombExploded = false;
 		loadObstacles("course.csv");
 	}
 	
@@ -58,14 +65,18 @@ public class ZombieSurvival {
 	}
 
 	public void mouseAction(float x, float y, int button) {
-		// TODO: Change this method to help the player move!
 		if (button == -1) {
 			player.setTry(x, y);
 		}
 		if (button == 1) {
-			output.println("BOMB!");
-			player.addNumOfBombs(-1);
-			detonateBomb();
+			if(player.getNumOfBombs() > 0) {
+				player.addNumOfBombs(-1);
+				output.println("BOOM!\tYou have "+player.getNumOfBombs()+" bombs remaining");
+				detonateBomb();
+				bombExploded = true;
+			} else {
+			output.println("Out of Bombs!");
+			}
 		}
 		if (button == 3) {
 			output.println("You clicked the right mouse button!");
@@ -73,44 +84,85 @@ public class ZombieSurvival {
 	}
 
 	public void detonateBomb() {
-		/*
-		 * This method controls the bomb action. It should check to see if the
-		 * player has any bombs. If so, that count should be decremented by one.
-		 * Then every zombie within a 50 pixel radius of the player should be
-		 * eliminated.
-		 */
+		int numZombKilled=0;
+		Rectangle bomb = new Rectangle((int) (player.getX()-50) , (int) (player.getY()-50) , 150 , 150 );
+		for(int i=0; i<zombies.size(); i++) {
+			if(bomb.intersects(zombies.get(i).getHitbox())) {
+				zombies.remove(i);
+				numZombKilled++;
+			}
+		}
+		score = (int) (score + numZombKilled*Math.sqrt(numZombKilled));
 	}
 
-	public void draw(Graphics2D g, float elapsedTime) {
+	public boolean draw(Graphics2D g, float elapsedTime) {
 		//Keep track of the number of draw cycles
 		ticks++;
-		
+
 		//Obstacle actions go here
 		for(int i=0; i<obstacles.size(); i++) {
 			canvas.drawObstacle(g, obstacles.get(i));
 			player.getCollision(obstacles.get(i));
-			//for(int j=0;j<zombies.size(); j++) { zombies.get(j).getCollision(obstacles.get(i); }
+			for(int j=0;j<zombies.size(); j++) { zombies.get(j).getObstacleCollision(obstacles.get(i)); }
 		}
 		
 		//Drawing and moving the player
 		player.move(elapsedTime);	//Must occur after "getCollision()" is called -- how the Human class works.
-		canvas.drawHuman(g, player);
+		canvas.drawHuman(g, player, player.getDirection(), phaseH);
 
 		//Time sensitive events
-		if(ticks%100 == 0) 		{ score++; }
-		if(ticks%5000 == 0) 	{ zombies.add(new Zombie()); }		//needs a way to ensure that the new zombie wont spawn inside an obstacle
-		if(ticks%50000 == 0) 	{ player.addNumOfBombs(1); }
-		if(ticks == 50001) 		{ticks = 1;}
+		if(ticks%100 == 0) { 
+			score++; 
+			phaseH++;
+			if(phaseH==8) { phaseH=0; }
+		}
+		if(ticks%200 == 0) {
+			phaseZ++;
+			if(phaseZ==3) { phaseZ=0; }
+		}				
+		if(ticks%5000 == 0) {
+			int zx = (int) (Math.random()*(BOARDWIDTH-45));
+			int zy = (int) (Math.random()*(BOARDHEIGHT-81));
+			boolean conflict = false;
+			
+			Confliction:
+			for(int i=0; i<obstacles.size(); i++) {
+				if(new Rectangle(zx,zy,50,90).intersects(obstacles.get(i))) {
+					conflict = true;
+					break Confliction;
+				}
+			}
+			
+			if(!conflict) { zombies.add(new Zombie(zx,zy)); }
+		}		
+		if(ticks%50000 == 0) {
+			player.addNumOfBombs(1);
+			output.println("New Bomb Acquired!");
+		}
+		if(ticks == 50001) 		{ ticks = 1; }
 		
 		//Zombie actions go here
 		for(int i=0; i<zombies.size(); i++) {
-			canvas.drawZombie(g, zombies.get(i));
-			//Check for zombie collision with player here, if collision set gameover=true;
+			canvas.drawZombie(g, zombies.get(i), zombies.get(i).getDirection(), phaseZ);
+			zombies.get(i).setTry(player.getX(),player.getY());
+			if(zombies.get(i).playerCollision(player.getHitbox())) { gameover = true; }
+			zombies.get(i).move(elapsedTime);
 		}
-		
+		if(bombExploded) {
+			boomTick++;
+			canvas.drawBoom(g,player);
+			if(boomTick==500) {
+				boomTick=0;
+				bombExploded=false;
+			}
+		}
 		//Using return (in void) to terminate the game is gameover occurs
 		if(gameover) {
-			return;
+			output.println("GAME OVER");
+			output.println("Your Score: "+score);
+			return false;
+		} else {
+			return true;
 		}
 
 	}
