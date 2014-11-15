@@ -46,6 +46,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	private BufferedImage[][] zombieSprites;
 	private BufferedImage[][] humanSprites;
 	private BufferedImage boomSprite;
+	private BufferedImage[] powerUp_Bomb;
 
 	/**
 	 * Constructor for the SimpleCanvas
@@ -65,12 +66,32 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 
 		humanSprites = loadHumanSprites("sprite.png");
 		zombieSprites = loadZombieSprites("zombie.png");
+		powerUp_Bomb = loadPowerUp_BombSprites("grenade.png");
 		try {
 			boomSprite = ImageIO.read(new File("boom.png"));
 		} catch (Exception e) {
 			System.err.println("Cannot load images!");
 		}
 
+	}
+	
+	public BufferedImage[] loadPowerUp_BombSprites(String filename) {
+		
+		BufferedImage[] spriteArray = new BufferedImage[4];
+		BufferedImage spriteSheet = null;
+		
+		try {
+			spriteSheet = ImageIO.read(new File(filename));
+		} catch (Exception e) {
+			System.err.println("Cannot load images!");
+		}
+		
+		spriteArray[0] = spriteSheet.getSubimage(0, 0, 22, 23);
+		spriteArray[1] = spriteSheet.getSubimage(22, 0, 22, 23);
+		spriteArray[2] = spriteSheet.getSubimage(44, 0, 22, 23);
+		spriteArray[3] = spriteSheet.getSubimage(66, 0, 22, 23);
+		
+		return spriteArray;
 	}
 	
 	/**
@@ -283,6 +304,10 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		g.drawImage(humanSprites[direction][phase], (int) h.getX(), (int) h.getY(), null);
 	}
 
+	public void drawPowerUp_Bomb(Graphics2D g, int x, int y, int phase) {
+		g.drawImage(powerUp_Bomb[phase], x, y, null);
+	}
+	
 	/**
 	 * This method should draw the explosion graphic on the screen on top of the
 	 * Human character.
