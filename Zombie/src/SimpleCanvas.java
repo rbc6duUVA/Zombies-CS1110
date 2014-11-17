@@ -190,7 +190,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		spriteArray[0][1] = spriteSheet.getSubimage(98, 108, 133-98, 189-108);
 		spriteArray[0][2] = spriteSheet.getSubimage(165, 111, 208-165, 192-111);
 
-		// load left facing // u-p-d-a-t-e-d
+		// load left facing // updated
 		spriteArray[1][0] = getFlippedImage(spriteSheet.getSubimage(18, 111, 61-18, 192-111));
 		spriteArray[1][1] = getFlippedImage(spriteSheet.getSubimage(98, 108, 133-98, 189-108));
 		spriteArray[1][2] = getFlippedImage(spriteSheet.getSubimage(165, 111, 208-165, 192-111));
@@ -304,8 +304,16 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		g.drawImage(humanSprites[direction][phase], (int) h.getX(), (int) h.getY(), null);
 	}
 
-	public void drawPowerUp_Bomb(Graphics2D g, int x, int y, int phase) {
-		g.drawImage(powerUp_Bomb[phase], x, y, null);
+	public void drawPowerUp(Graphics2D g, int x, int y, int id, int phase) {
+		switch (id) {
+		case 0: 
+			g.drawImage(powerUp_Bomb[phase], x, y, null);
+			break;
+		default:
+			System.out.println("Error drawing power up");
+			break;
+		}
+		
 	}
 	
 	/**
