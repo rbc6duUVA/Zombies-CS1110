@@ -32,12 +32,13 @@ public class ZombieSurvival {
 	private ArrayList<Zombie> zombies;
 	private int score;
 	private int ticks;
-	private int PowerUpTick;
 	private int boomTick;
 	private int phaseH;
 	private int phaseZ;
 	private int phasePUB;
 	boolean gameover;
+	
+	private PowerUp extraBomb;
 	
 	private boolean bombExploded;
 	private boolean powerUpBombActive;
@@ -50,12 +51,11 @@ public class ZombieSurvival {
 		player = new Human();
 		zombies = new ArrayList<Zombie>();
 		obstacles = new ArrayList<Rectangle>();
+		extraBomb = new PowerUp(-50,-50,0);
 		score = 0;
 		
 		ticks = 0;
-		
 		boomTick = 0;
-		PowerUpTick = 0;
 		
 		phaseH = 0;
 		phaseZ = 0;
@@ -100,7 +100,7 @@ public class ZombieSurvival {
 
 	public void detonateBomb() {
 		int numZombKilled=0;
-		Rectangle bomb = new Rectangle((int) (player.getX()-50) , (int) (player.getY()-50) , 200 , 200 );
+		Rectangle bomb = new Rectangle((int) (player.getX()-75) , (int) (player.getY()-50) , 200 , 200 );
 		for(int i=0; i<zombies.size(); i++) {
 			if(bomb.intersects(zombies.get(i).getHitbox())) {
 				zombies.remove(i);
@@ -108,6 +108,7 @@ public class ZombieSurvival {
 			}
 		}
 		score = (int) (score + numZombKilled*Math.sqrt(numZombKilled));
+		output.println("[Killed "+ numZombKilled +" zombies]");
 	}
 
 	public boolean draw(Graphics2D g, float elapsedTime) {
@@ -159,9 +160,9 @@ public class ZombieSurvival {
 		}		
 		if(ticks%50000 == 0) {
 			player.addNumOfBombs(1);
-			output.println("New Bomb Acquired!");
+			output.println("New Bomb Acquired! ("+player.getNumOfBombs()+")");
 		}
-		if(ticks%100 == 0) {
+		if(ticks%35000 == 0) {
 			powerUpBombActive = true;
 			wasActivated = true;
 		}
@@ -195,15 +196,15 @@ public class ZombieSurvival {
 		int powerUpChooser = (int) Math.random()*1;
 		//
 		if(powerUpBombActive) {
-			PowerUp extraBomb = new PowerUp(-50,-50,0);
 			if(wasActivated == true) {	
 				extraBomb = new PowerUp(puX,puY,powerUpChooser);
 				wasActivated = false;
 			}
-			extraBomb.drawPowerUp(canvas, g);
+			canvas.drawPowerUp(g, extraBomb.getX(), extraBomb.getY(), extraBomb.getID(), phasePUB);
 			if(player.getHitbox().intersects(extraBomb.getHitbox())) {
 				player.addNumOfBombs(1);
 				output.println("Power UP!  Extra Bomb! ("+ player.getNumOfBombs() +")");
+				extraBomb = new PowerUp(-50,-50,0);
 			}
 			powerUpBombActive = extraBomb.isAlive();
 		}
