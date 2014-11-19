@@ -83,14 +83,16 @@ public class ZombieSurvival {
 		if (button == -1) {
 			player.setTry(x, y);
 		}
+		if(gameover==false) {
 		if (button == 1) {
-			if(player.getNumOfBombs() > 0) {
-				player.addNumOfBombs(-1);
-				output.println("BOOM!\tYou have "+player.getNumOfBombs()+" bombs remaining");
-				detonateBomb();
-				bombExploded = true;
-			} else {
-			output.println("Out of Bombs!");
+				if(player.getNumOfBombs() > 0) {
+					player.addNumOfBombs(-1);
+					output.println("BOOM!\tYou have "+player.getNumOfBombs()+" bombs remaining");
+					detonateBomb();
+					bombExploded = true;
+				} else {
+				output.println("Out of Bombs!");
+				}
 			}
 		}
 		if (button == 3) {
@@ -146,11 +148,15 @@ public class ZombieSurvival {
 			int zy = (int) (Math.random()*(BOARDHEIGHT-81));
 			boolean conflict = false;
 			
-			Confliction1:
+			Confliction:
 			for(int i=0; i<obstacles.size(); i++) {
 				if(new Rectangle(zx,zy,50,90).intersects(obstacles.get(i))) {
 					conflict = true;
-					break Confliction1;
+					break Confliction;
+				}
+				if(new Rectangle(zx,zy,50,90).intersects(zombies.get(i).getCollisionBox())) {
+					conflict = true;
+					break Confliction;
 				}
 			}
 			
@@ -175,7 +181,9 @@ public class ZombieSurvival {
 			canvas.drawZombie(g, zombies.get(i), zombies.get(i).getDirection(), phaseZ);
 			zombies.get(i).setTry(player.getX(),player.getY());
 			if(zombies.get(i).playerCollision(player.getHitbox())) { gameover = true; }
-			for(int j=i+1; j<zombies.size(); j++) { zombies.get(i).getObstacleCollision(zombies.get(j).getHitbox()); }
+			for(int j=0; j<zombies.size(); j++) {
+				if(i != j) { zombies.get(i).getObstacleCollision(zombies.get(j).getCollisionBox()); }
+				}
 			zombies.get(i).move(elapsedTime);
 		}
 		
