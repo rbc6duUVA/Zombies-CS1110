@@ -104,7 +104,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 */
 	public BufferedImage[][] loadHumanSprites(String filename) {
 
-		BufferedImage[][] spriteArray = new BufferedImage[5][8];
+		BufferedImage[][] spriteArray = new BufferedImage[10][8];
 		BufferedImage spriteSheet = null;
 
 		try {
@@ -163,6 +163,60 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		spriteArray[4][6] = spriteSheet.getSubimage(7, 159, 39, 75);
 		spriteArray[4][7] = spriteSheet.getSubimage(7, 159, 39, 75);
 
+		//Shift down +234 to get from 80 to 314, GhostGirl is same plate, just below on the spritesheet.
+		
+		// load right facing // updated
+		spriteArray[5][0] = spriteSheet.getSubimage(5, 80+234, 38, 74);
+		spriteArray[5][1] = spriteSheet.getSubimage(53, 80+234, 92-53, 74);
+		spriteArray[5][2] = spriteSheet.getSubimage(103, 80+234, 142-103, 74);
+		spriteArray[5][3] = spriteSheet.getSubimage(152, 77+234, 190-152, 74);
+		spriteArray[5][4] = spriteSheet.getSubimage(195, 77+234, 234-195, 74);
+		spriteArray[5][5] = spriteSheet.getSubimage(247, 80+234, 286-247, 74);
+		spriteArray[5][6] = spriteSheet.getSubimage(293, 80+234, 332-293, 74);
+		spriteArray[5][7] = spriteSheet.getSubimage(341, 80+234, 380-341, 74);
+				
+		// load left facing // updated
+		spriteArray[6][0] = getFlippedImage(spriteSheet.getSubimage(5, 79+234, 38, 74));
+		spriteArray[6][1] = getFlippedImage(spriteSheet.getSubimage(53, 79+234, 92-53, 74));
+		spriteArray[6][2] = getFlippedImage(spriteSheet.getSubimage(103, 79+234, 142-103, 74));
+		spriteArray[6][3] = getFlippedImage(spriteSheet.getSubimage(151, 77+234, 190-152, 74));
+		spriteArray[6][4] = getFlippedImage(spriteSheet.getSubimage(195, 77+234, 234-195, 74));
+		spriteArray[6][5] = getFlippedImage(spriteSheet.getSubimage(247, 79+234, 286-247, 74));
+		spriteArray[6][6] = getFlippedImage(spriteSheet.getSubimage(293, 79+234, 332-293, 74));
+		spriteArray[6][7] = getFlippedImage(spriteSheet.getSubimage(341, 79+234, 380-341, 74));
+				
+		// load up facing // updated
+		spriteArray[7][0] = spriteSheet.getSubimage(7, 237+234, 39, 75);
+		spriteArray[7][1] = spriteSheet.getSubimage(55, 237+234, 39, 75);
+		spriteArray[7][2] = spriteSheet.getSubimage(101, 237+234, 39, 75);
+		spriteArray[7][3] = spriteSheet.getSubimage(151, 237+234, 39, 75);
+		spriteArray[7][4] = spriteSheet.getSubimage(197, 237+234, 39, 75);
+		spriteArray[7][5] = spriteSheet.getSubimage(245, 237+234, 39, 75);
+		spriteArray[7][6] = spriteSheet.getSubimage(291, 237+234, 39, 75);
+		spriteArray[7][7] = spriteSheet.getSubimage(341, 237+234, 39, 75);
+				
+		// load down facing // updated
+		spriteArray[8][0] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[8][1] = spriteSheet.getSubimage(55, 159+234, 39, 75);
+		spriteArray[8][2] = spriteSheet.getSubimage(101, 159+234, 39, 75);
+		spriteArray[8][3] = spriteSheet.getSubimage(151, 161+234, 39, 75);
+		spriteArray[8][4] = spriteSheet.getSubimage(197, 159+234, 39, 75);
+		spriteArray[8][5] = spriteSheet.getSubimage(245, 159+234, 39, 75);
+		spriteArray[8][6] = spriteSheet.getSubimage(291, 159+234, 39, 75);
+		spriteArray[8][7] = spriteSheet.getSubimage(341, 161+234, 39, 75);
+				
+		//Stationary
+		spriteArray[9][0] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][1] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][2] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][3] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][4] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][5] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][6] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+		spriteArray[9][7] = spriteSheet.getSubimage(7, 159+234, 39, 75);
+	
+		
+		
 		return spriteArray;
 	}
 
