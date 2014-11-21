@@ -25,12 +25,12 @@ public class InfoFrame {
 	private JTextArea textArea = null;
 	private JPanel panel;
 	private JScrollPane scroll;
-	//private ZombieSurvival field;
+	private ZombieSurvival field;
 	private JFrame frame;
 
 	public InfoFrame(ZombieSurvival field_) {
 
-		//field = field_;
+		field = field_;
 		frame = new JFrame();
 		frame.setSize(400, 300);
 		frame.setLocation(850, 100);
