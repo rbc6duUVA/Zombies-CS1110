@@ -18,7 +18,7 @@ public class PowerUp {
 		phase=0;
 		age=0;
 		hitbox = new Rectangle(x,y,30,30);
-		lifespan = 17530;
+		lifespan = (45000/2)-4;
 	}
 	
 	public Rectangle getHitbox() {
@@ -39,11 +39,13 @@ public class PowerUp {
 	public int getAge() {
 		return age;
 	}
-	public void setLifespan(int num) {
-		lifespan = num;
+	public void agePowerUp() {
+		age++;
+	}
+	public void setAge(int num) {
+		age = num;
 	}
 	public boolean isAlive() {
-		age++;
 		if(age<=lifespan) return true;
 		if(age>lifespan) return false;
 		return true;
