@@ -44,11 +44,20 @@ public class Human {
 	public Rectangle getHitbox() {
 		return hitbox;
 	}
+	public Rectangle getSpawnbox(){
+		return new Rectangle( (int)(x-100) , (int)(y-100) , (int)(200+width) , (int)(200+height) );
+	}
 	public int getNumOfBombs() {
 		return numOfBombs;
 	}
 	public void addNumOfBombs(int increment) {
 		numOfBombs += increment;
+	}
+	public void setSpeed(int newSpeed) {
+		speed = newSpeed;
+	}
+	public int getSpeed() {
+		return (int) speed;
 	}
 	
 	public Human() {
