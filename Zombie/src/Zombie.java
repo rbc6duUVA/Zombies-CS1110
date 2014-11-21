@@ -44,7 +44,7 @@ public class Zombie {
 		speed=20;
 		width = 24;
 		height = 44;
-		hitbox = 	new Rectangle( (int) x 					, (int) y 				, width 			, height 			);
+		hitbox = 	new Rectangle( (int) x+(width/2)		, (int) y+(height/2)	, width 			, height 			);
 		killUP = 	new Rectangle( (int) x 					, (int) y-2				, (int) 1.7*width 	, 2					);
 		killDOWN = 	new Rectangle( (int) x 					, (int) (y+2*height+2)	, (int) 1.7*width 	, 2					);
 		killLEFT = 	new Rectangle( (int) x-2 				, (int) y 				, 2 				, (int) 2*height	);
