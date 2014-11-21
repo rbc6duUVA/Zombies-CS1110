@@ -25,6 +25,7 @@ public class InfoFrame {
 	private JTextArea textArea = null;
 	private JPanel panel;
 	private JScrollPane scroll;
+	@SuppressWarnings("unused")
 	private ZombieSurvival field;
 	private JFrame frame;
 
