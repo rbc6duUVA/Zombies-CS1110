@@ -7,6 +7,7 @@ public class PowerUp {
 	private int y;
 	private int id;
 	private int age;
+	private int lifespan;
 	private int phase;
 	private Rectangle hitbox;
 	
@@ -16,7 +17,8 @@ public class PowerUp {
 		this.id=ID;
 		phase=0;
 		age=0;
-		hitbox = new Rectangle(x,y,25,25);
+		hitbox = new Rectangle(x,y,30,30);
+		lifespan = 17530;
 	}
 	
 	public Rectangle getHitbox() {
@@ -37,10 +39,13 @@ public class PowerUp {
 	public int getAge() {
 		return age;
 	}
+	public void setLifespan(int num) {
+		lifespan = num;
+	}
 	public boolean isAlive() {
 		age++;
-		if(age<=15000) return true;
-		if(age>15000) return false;
+		if(age<=lifespan) return true;
+		if(age>lifespan) return false;
 		return true;
 	}
 }
