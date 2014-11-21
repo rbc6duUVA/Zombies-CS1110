@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
  * @author Jason Lawrence and Mark Sherriff
  * 
  */
+@SuppressWarnings("serial")
 public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionListener {
 
 	// width and height of the window
@@ -41,12 +42,12 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	private ZombieSurvival simulator;
 
 	// BufferedImages to handle the sprite graphics
-	// We've provided a 2D array for zombies and humans in case you want to do
-	// animation
 	private BufferedImage[][] zombieSprites;
 	private BufferedImage[][] humanSprites;
 	private BufferedImage boomSprite;
 	private BufferedImage[] powerUp_Bomb;
+	private BufferedImage[] powerUp_Speed;
+	private BufferedImage[] powerUp_Invincible;
 
 	/**
 	 * Constructor for the SimpleCanvas
@@ -67,12 +68,53 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		humanSprites = loadHumanSprites("sprite.png");
 		zombieSprites = loadZombieSprites("zombie.png");
 		powerUp_Bomb = loadPowerUp_BombSprites("grenade.png");
+		powerUp_Speed = loadPowerUp_Speed("Shoes.png");
+		powerUp_Invincible = loadPowerUp_Invincible("Potion.png");
 		try {
 			boomSprite = ImageIO.read(new File("boom.png"));
 		} catch (Exception e) {
 			System.err.println("Cannot load images!");
 		}
 
+	}
+	
+	public BufferedImage[] loadPowerUp_Invincible(String filename) {
+		BufferedImage[] spriteArray = new BufferedImage[5];
+		BufferedImage spriteSheet = null;
+		
+		try {
+			spriteSheet = ImageIO.read(new File(filename));
+		} catch (Exception e) {
+			System.err.println("Cannot load images!");
+		}
+		
+		spriteArray[0] = spriteSheet.getSubimage(0,0,31,25);
+		spriteArray[1] = spriteSheet.getSubimage(1*31,0,31,25);
+		spriteArray[2] = spriteSheet.getSubimage(2*31,0,31,25);
+		spriteArray[3] = spriteSheet.getSubimage(3*31,0,31,25);
+		spriteArray[4] = spriteSheet.getSubimage(4*31,0,31,25);
+		
+		return spriteArray;
+	}
+	
+	public BufferedImage[] loadPowerUp_Speed(String filename) {
+		BufferedImage[] spriteArray = new BufferedImage[6];
+		BufferedImage spriteSheet = null;
+		
+		try {
+			spriteSheet = ImageIO.read(new File(filename));
+		} catch (Exception e) {
+			System.err.println("Cannot load images!");
+		}
+		
+		spriteArray[0] = spriteSheet.getSubimage(0,0,18,18);
+		spriteArray[1] = spriteSheet.getSubimage(18,0,18,18);
+		spriteArray[2] = spriteSheet.getSubimage(2*18,0,18,18);
+		spriteArray[3] = spriteSheet.getSubimage(3*18,0,18,18);
+		spriteArray[4] = spriteSheet.getSubimage(4*18,0,18,18);
+		spriteArray[5] = spriteSheet.getSubimage(5*18,0,18,18);
+		
+		return spriteArray;
 	}
 	
 	public BufferedImage[] loadPowerUp_BombSprites(String filename) {
@@ -363,6 +405,12 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 		case 0: 
 			g.drawImage(powerUp_Bomb[phase], x, y, null);
 			break;
+		case 1:
+			g.drawImage(powerUp_Speed[phase], x, y, null);
+			break;
+		case 2:
+			g.drawImage(powerUp_Invincible[phase], x, y, null);
+			break;
 		default:
 			System.out.println("Error drawing power up");
 			break;
@@ -420,7 +468,6 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * called.
 	 */
 	public void mouseClicked(MouseEvent e) {
-		simulator.mouseAction((float) e.getX(), (float) e.getY(), e.getButton());
 	}
 
 	/**
@@ -434,6 +481,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * Whenever the mouse leaves the ZombieSurvival, this method gets called.
 	 */
 	public void mouseExited(MouseEvent e) {
+		simulator.mouseAction((float) e.getX(), (float) e.getY(), e.getButton());
 	}
 
 	/**
@@ -441,6 +489,7 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * clicked) on the ZombieSurvival, this method gets called.
 	 */
 	public void mousePressed(MouseEvent e) {
+		simulator.mouseAction((float) e.getX(), (float) e.getY(), e.getButton());
 	}
 
 	/**
@@ -454,7 +503,8 @@ public class SimpleCanvas extends JPanel implements MouseListener, MouseMotionLi
 	 * Whenever the mouse clicked and dragged on the ZombieSurvival, this method
 	 * gets called.
 	 */
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(MouseEvent e) {
+		simulator.mouseAction((float) e.getX(), (float) e.getY(), e.getButton());
 	}
 
 }
