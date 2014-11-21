@@ -24,8 +24,8 @@ public class ZombieSurvival {
 	
 	private InfoFrame output; 	// The InfoFrame that you use for output instead of System.out
 	
-	private final int BOARDHEIGHT = 700;
-	private final int BOARDWIDTH = 700;
+	private final int BOARDHEIGHT = 1000;
+	private final int BOARDWIDTH = 1000;
 	
 	private Human player;
 	private ArrayList<Rectangle> obstacles;
@@ -54,7 +54,12 @@ public class ZombieSurvival {
 		output = new InfoFrame(this);
 		player = new Human();
 		zombies = new ArrayList<Zombie>();
-			zombies.add(new Zombie(350,-500));
+			zombies.add(new Zombie(350,-700));
+			zombies.add(new Zombie(500,-2100));
+			zombies.add(new Zombie(650,-3500));
+			zombies.add(new Zombie(-1400,350));
+			zombies.add(new Zombie(-2800,500));
+			zombies.add(new Zombie(-4200,650));
 		obstacles = new ArrayList<Rectangle>();
 		thePowerUp = new PowerUp(-50,-50,0);
 		score = 0;
@@ -191,9 +196,11 @@ public class ZombieSurvival {
 			player.addNumOfBombs(1);
 			output.println("New Bomb Acquired! ("+player.getNumOfBombs()+")");
 		}
-		if(ticks%35000 == 0) {
+		if(ticks%45000 == 0) {
 			powerUpActive = true;
 			wasActivated = true;
+			zombies.add(new Zombie(-2400,900));
+			zombies.add(new Zombie(600,-3100));
 		}
 		if(ticks == 100001) 		{ ticks = 1; }
 		////////////////////////////////////////////////////////////////////
@@ -234,6 +241,7 @@ public class ZombieSurvival {
 				thePowerUp = new PowerUp(puX,puY,powerUpChooser);
 				wasActivated = false;
 			}
+			thePowerUp.agePowerUp();
 			if(thePowerUp.getID() == 0) {
 				canvas.drawPowerUp(g, thePowerUp.getX(), thePowerUp.getY(), thePowerUp.getID(), phasePUB);
 				if(player.getHitbox().intersects(thePowerUp.getHitbox())) {
@@ -257,7 +265,7 @@ public class ZombieSurvival {
 					isInvincible = true;
 					output.println("Power UP!  Invincibility!");
 					thePowerUp = new PowerUp(-50,-50,0);
-					thePowerUp.setLifespan(34999-17530);
+					thePowerUp.setAge(0);
 				}
 			}
 			
